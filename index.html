@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wick LU · Canadian Craft Beer</title>
+    <!-- Google Fonts & Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        luloGreen: '#6BBF2B',
+                        deepForest: '#1B4332',
+                        harvestGold: '#F2B705',
+                        creamBg: '#FAF8F2'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-creamBg text-gray-800 font-sans">
+
+    <!-- Top Notification Bar & Language Selector -->
+    <header class="bg-deepForest text-white text-xs sm:text-sm py-2 px-4 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <span id="top-promo" class="truncate">🇨🇦 Free shipping in Ontario & Quebec on orders over C$50 | Livraison gratuite</span>
+            
+            <!-- Selector de Idiomas obligatorio para Canadá (ES | EN | FR) -->
+            <div class="flex items-center space-x-2 bg-black/20 px-2 py-1 rounded">
+                <span class="text-xs text-harvestGold font-bold">Lang:</span>
+                <button onclick="changeLang('es')" class="hover:text-luloGreen font-semibold px-1">ES</button>
+                <span>|</span>
+                <button onclick="changeLang('en')" class="hover:text-luloGreen font-semibold px-1">EN</button>
+                <span>|</span>
+                <button onclick="changeLang('fr')" class="hover:text-luloGreen font-semibold px-1">FR</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="font-heading font-extrabold text-2xl text-deepForest tracking-tight">
+                WICK <span class="text-luloGreen">LU</span>
+            </a>
+            <div class="hidden md:flex space-x-8 font-medium text-gray-700">
+                <a href="#catalog" class="nav-catalog hover:text-luloGreen transition">Catálogo</a>
+                <a href="#story" class="nav-story hover:text-luloGreen transition">Nuestra Historia</a>
+                <a href="#ar-section" class="nav-ar hover:text-luloGreen transition">Realidad Aumentada</a>
+                <a href="#contact" class="nav-contact hover:text-luloGreen transition">Contacto</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleCart()" class="bg-deepForest text-white px-4 py-2 rounded-full font-medium flex items-center space-x-2 hover:bg-luloGreen transition">
+                    🛒 <span id="cart-btn-text">Carrito</span> (<span id="cart-count">0</span>)
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative bg-deepForest text-white py-20 px-4 overflow-hidden">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <span class="bg-luloGreen text-deepForest font-bold px-3 py-1 rounded-full text-xs uppercase tracking-wider">
+                    🇨🇦 Directo desde los Andes a Canadá
+                </span>
+                <h1 id="hero-title" class="font-heading font-extrabold text-4xl sm:text-5xl leading-tight">
+                    El espíritu cítrico de los Andes en cada sorbo.
+                </h1>
+                <p id="hero-desc" class="text-gray-300 text-lg">
+                    Descubre Wick LU, la primera cerveza artesanal de lulo colombiano en Canadá. Refrescante, 100% natural y con el balance perfecto de acidez tropical.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#catalog" id="hero-btn-shop" class="bg-luloGreen text-deepForest font-bold px-8 py-3 rounded-xl shadow-lg hover:bg-harvestGold transition">
+                        Comprar Ahora
+                    </a>
+                    <a href="#ar-section" id="hero-btn-ar" class="border-2 border-white text-white font-bold px-6 py-3 rounded-xl hover:bg-white/10 transition">
+                        Ver en AR 📱
+                    </a>
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <div class="bg-gradient-to-br from-luloGreen/30 to-harvestGold/20 p-4 rounded-3xl shadow-2xl border border-white/10">
+                    <div class="bg-white/5 rounded-2xl p-8 text-center">
+                        <span class="text-7xl">🍺</span>
+                        <h3 class="text-white font-heading font-bold text-xl mt-4">Wick LU Classic Sour</h3>
+                        <p class="text-harvestGold font-bold mt-1">4.8% ABV · 473 ml</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catalog Section -->
+    <section id="catalog" class="max-w-7xl mx-auto px-4 py-16">
+        <div class="text-center mb-12">
+            <h2 id="catalog-title" class="font-heading font-extrabold text-3xl text-deepForest">Nuestra Selección</h2>
+            <p id="catalog-subtitle" class="text-gray-600 mt-2">Precios en Dólares Canadienses (CAD) con impuestos y depósito incluidos.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Product 1 -->
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100 flex flex-col justify-between">
+                <div>
+                    <div class="bg-gray-100 h-64 flex items-center justify-center text-6xl">
+                        🟢
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-bold text-luloGreen uppercase">Flagship Sour</span>
+                        <h3 class="font-heading font-bold text-xl text-deepForest mt-1">Wick LU Classic Sour</h3>
+                        <p id="p1-desc" class="text-gray-600 text-sm mt-2">Notas intensas de lulo fresco, maracuyá y un toque cítrico efervescente.</p>
+                    </div>
+                </div>
+                <div class="p-6 pt-0 flex justify-between items-center">
+                    <span class="text-2xl font-extrabold text-deepForest">C$5.49</span>
+                    <button onclick="addToCart('Wick LU Classic Sour', 5.49)" class="bg-deepForest text-white px-4 py-2 rounded-lg font-medium hover:bg-luloGreen transition add-cart-btn">Agregar</button>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100 flex flex-col justify-between">
+                <div>
+                    <div class="bg-gray-100 h-64 flex items-center justify-center text-6xl">
+                        🟡
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-bold text-harvestGold uppercase">Tropical Edition</span>
+                        <h3 class="font-heading font-bold text-xl text-deepForest mt-1">Wick LU Maracuyá Ale</h3>
+                        <p id="p2-desc" class="text-gray-600 text-sm mt-2">Combinación dorada de frutos andinos con cuerpo suave y aromático.</p>
+                    </div>
+                </div>
+                <div class="p-6 pt-0 flex justify-between items-center">
+                    <span class="text-2xl font-extrabold text-deepForest">C$5.99</span>
+                    <button onclick="addToCart('Wick LU Maracuyá Ale', 5.99)" class="bg-deepForest text-white px-4 py-2 rounded-lg font-medium hover:bg-luloGreen transition add-cart-btn">Agregar</button>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100 flex flex-col justify-between">
+                <div>
+                    <div class="bg-gray-100 h-64 flex items-center justify-center text-6xl">
+                        🌲
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-bold text-deepForest uppercase">Hop Forward</span>
+                        <h3 class="font-heading font-bold text-xl text-deepForest mt-1">Wick LU Cold IPA</h3>
+                        <p id="p3-desc" class="text-gray-600 text-sm mt-2">Lúpulo noble con sutiles destellos cítricos de lulo en frío.</p>
+                    </div>
+                </div>
+                <div class="p-6 pt-0 flex justify-between items-center">
+                    <span class="text-2xl font-extrabold text-deepForest">C$6.29</span>
+                    <button onclick="addToCart('Wick LU Cold IPA', 6.29)" class="bg-deepForest text-white px-4 py-2 rounded-lg font-medium hover:bg-luloGreen transition add-cart-btn">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Augmented Reality Section -->
+    <section id="ar-section" class="bg-white py-16 border-y border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <span class="bg-harvestGold/20 text-deepForest font-bold px-3 py-1 rounded-full text-xs uppercase">
+                    Experiencia Interactiva
+                </span>
+                <h2 id="ar-title" class="font-heading font-extrabold text-3xl text-deepForest">
+                    Visualiza Wick LU en Realidad Aumentada
+                </h2>
+                <p id="ar-desc" class="text-gray-600">
+                    Escanea el código QR con tu celular o haz clic en el botón para proyectar la lata en 3D sobre tu mesa. Conoce su origen andino y obtén un 10% de descuento en tu primer pedido.
+                </p>
+                <div class="flex items-center space-x-4">
+                    <a href="#" id="ar-btn-link" class="bg-deepForest text-white font-bold px-6 py-3 rounded-xl hover:bg-luloGreen transition">
+                        ✨ Abrir Visor AR
+                    </a>
+                </div>
+            </div>
+            <div class="flex justify-center bg-creamBg p-8 rounded-3xl border border-dashed border-gray-300">
+                <div class="text-center">
+                    <div class="bg-white p-4 rounded-2xl shadow-md inline-block mb-4">
+                        <span class="text-6xl">📱🔳</span>
+                    </div>
+                    <p class="text-sm font-semibold text-gray-700">Escanea con la cámara de tu móvil</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section id="story" class="max-w-4xl mx-auto px-4 py-16 text-center">
+        <h2 id="story-title" class="font-heading font-extrabold text-3xl text-deepForest mb-6">Nuestro Origen Colombiano</h2>
+        <p id="story-text" class="text-gray-700 leading-relaxed text-lg">
+            Nacidos en las montañas de Cundinamarca, Colombia, en Wick LU fusionamos la tradición cervecera con el tesoro agrícola más vibrante de los Andes: el lulo. Trabajamos directamente con pequeños agricultores de altura para llevar frescura, comercio justo y autenticidad tropical al mercado canadiense.
+        </p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-deepForest text-white py-12 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="font-heading font-bold text-xl text-luloGreen">WICK LU</h3>
+                <p class="text-gray-400 text-sm mt-2">Colombian Exotic Craft Beer in Canada.</p>
+            </div>
+            <div>
+                <h4 id="footer-legal" class="font-bold mb-2">Regulación & Pagos</h4>
+                <p class="text-gray-400 text-sm">Venta sujeta a leyes de LCBO & SAQ. 19+ (ON) / 18+ (QC). Pagos seguros vía Interac, Visa y PayPal.</p>
+            </div>
+            <div>
+                <h4 id="footer-contact" class="font-bold mb-2">Contacto</h4>
+                <p class="text-gray-400 text-sm">Toronto, ON & Montreal, QC · Canada<br>contacto@wicklu.ca</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto border-t border-white/10 mt-8 pt-6 text-center text-xs text-gray-500">
+            © 2026 Wick LU Canada. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <!-- Simple Cart Drawer Modal -->
+    <div id="cart-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-end">
+        <div class="bg-white w-full max-w-md h-full p-6 flex flex-col justify-between shadow-2xl">
+            <div>
+                <div class="flex justify-between items-center border-b pb-4">
+                    <h3 class="font-heading font-bold text-xl text-deepForest" id="cart-title">Tu Carrito</h3>
+                    <button onclick="toggleCart()" class="text-gray-500 hover:text-black font-bold text-xl">✕</button>
+                </div>
+                <div id="cart-items" class="mt-6 space-y-4 overflow-y-auto max-h-[60vh]">
+                    <p class="text-gray-500 text-sm" id="cart-empty">El carrito está vacío.</p>
+                </div>
+            </div>
+            <div class="border-t pt-4 space-y-4">
+                <div class="flex justify-between font-bold text-lg">
+                    <span id="cart-total-label">Total:</span>
+                    <span id="cart-total">C$0.00</span>
+                </div>
+                <button onclick="checkout()" id="checkout-btn" class="w-full bg-luloGreen text-deepForest font-bold py-3 rounded-xl hover:bg-harvestGold transition">
+                    Proceder al Pago (Simulado)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Interactivity & Trilingual Translation -->
+    <script>
+        let cart = [];
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCartUI();
+            alert(name + " agregado al carrito.");
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const container = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 text-sm" id="cart-empty">El carrito está vacío.</p>`;
+                totalEl.innerText = "C$0.00";
+                return;
+            }
+
+            container.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                container.innerHTML += `
+                    <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
+                        <div>
+                            <p class="font-bold text-sm text-deepForest">${item.name}</p>
+                            <p class="text-xs text-gray-500">C$${item.price.toFixed(2)}</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-red-500 text-xs hover:underline">Eliminar</button>
+                    </div>
+                `;
+            });
+            totalEl.innerText = "C$" + total.toFixed(2);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert("El carrito está vacío.");
+                return;
+            }
+            alert("¡Pedido simulado con éxito! Gracias por elegir Wick LU en Canadá.");
+            cart = [];
+            updateCartUI();
+            toggleCart();
+        }
+
+        // Diccionario de traducciones (Español | Inglés | Francés)
+        const translations = {
+            es: {
+                topPromo: "🇨🇦 Envío gratis en Ontario y Quebec en compras superiores al C$50 | Livraison gratuite",
+                navCatalog: "Catálogo",
+                navStory: "Nuestra Historia",
+                navAr: "Realidad Aumentada",
+                navContact: "Contacto",
+                cartBtn: "Carrito",
+                heroTitle: "El espíritu cítrico de los Andes en cada sorbo.",
+                heroDesc: "Descubre Wick LU, la primera cerveza artesanal de lulo colombiano en Canadá. Refrescante, 100% natural y con el balance perfecto de acidez tropical.",
+                heroBtnShop: "Comprar Ahora",
+                heroBtnAr: "Ver en AR 📱",
+                catalogTitle: "Nuestra Selección",
+                catalogSubtitle: "Precios en Dólares Canadienses (CAD) con impuestos y depósito incluidos.",
+                p1Desc: "Notas intensas de lulo fresco, maracuyá y un toque cítrico efervescente.",
+                p2Desc: "Combinación dorada de frutos andinos con cuerpo suave y aromático.",
+                p3Desc: "Lúpulo noble con sutiles destellos cítricos de lulo en frío.",
+                addCart: "Agregar",
+                arTitle: "Visualiza Wick LU en Realidad Aumentada",
+                arDesc: "Escanea el código QR con tu celular o haz clic en el botón para proyectar la lata en 3D sobre tu mesa. Conoce su origen andino y obtén un 10% de descuento en tu primer pedido.",
+                arBtnLink: "✨ Abrir Visor AR",
+                storyTitle: "Nuestro Origen Colombiano",
+                storyText: "Nacidos en las montañas de Cundinamarca, Colombia, en Wick LU fusionamos la tradición cervecera con el tesoro agrícola más vibrante de los Andes: el lulo. Trabajamos directamente con pequeños agricultores de altura para llevar frescura, comercio justo y autenticidad tropical al mercado canadiense.",
+                footerLegal: "Regulación & Pagos",
+                footerContact: "Contacto",
+                cartTitle: "Tu Carrito",
+                cartEmpty: "El carrito está vacío.",
+                cartTotalLabel: "Total:",
+                checkoutBtn: "Proceder al Pago (Simulado)"
+            },
+            en: {
+                topPromo: "🇨🇦 Free shipping in Ontario & Quebec on orders over C$50 | Livraison gratuite",
+                navCatalog: "Catalog",
+                navStory: "Our Story",
+                navAr: "Augmented Reality",
+                navContact: "Contact",
+                cartBtn: "Cart",
+                heroTitle: "The exotic citrus spirit of the Andes in every sip.",
+                heroDesc: "Discover Wick LU, the first Colombian lulo craft beer in Canada. Refreshing, 100% natural, and with the perfect balance of tropical acidity.",
+                heroBtnShop: "Shop Now",
+                heroBtnAr: "View in AR 📱",
+                catalogTitle: "Our Selection",
+                catalogSubtitle: "Prices in Canadian Dollars (CAD) including taxes and deposit.",
+                p1Desc: "Intense notes of fresh lulo, passion fruit, and a zesty citrus touch.",
+                p2Desc: "Golden blend of Andean fruits with a smooth and aromatic body.",
+                p3Desc: "Noble hops with subtle cold-infused citrus lulo highlights.",
+                addCart: "Add",
+                arTitle: "Experience Wick LU in Augmented Reality",
+                arDesc: "Scan the QR code with your mobile or click the button to project the 3D can on your table. Discover our Andean origin and get 10% off your first order.",
+                arBtnLink: "✨ Open AR Viewer",
+                storyTitle: "Our Colombian Origin",
+                storyText: "Born in the mountains of Cundinamarca, Colombia, at Wick LU we fuse brewing tradition with the most vibrant agricultural treasure of the Andes: the lulo. We work directly with small highland farmers to bring freshness, fair trade, and tropical authenticity to the Canadian market.",
+                footerLegal: "Regulation & Payments",
+                footerContact: "Contact",
+                cartTitle: "Your Cart",
+                cartEmpty: "Your cart is empty.",
+                cartTotalLabel: "Total:",
+                checkoutBtn: "Proceed to Checkout (Simulated)"
+            },
+            fr: {
+                topPromo: "🇨🇦 Livraison gratuite en Ontario et au Québec pour les commandes de plus de 50 C$",
+                navCatalog: "Catalogue",
+                navStory: "Notre Histoire",
+                navAr: "Réalité Augmentée",
+                navContact: "Contact",
+                cartBtn: "Panier",
+                heroTitle: "L'esprit d'agrumes exotiques des Andes à chaque gorgée.",
+                heroDesc: "Découvrez Wick LU, la première bière artisanale colombienne au lulo au Canada. Rafraîchissante, 100 % naturelle et avec l'équilibre parfait d'acidité tropicale.",
+                heroBtnShop: "Acheter",
+                heroBtnAr: "Voir en RA 📱",
+                catalogTitle: "Notre Sélection",
+                catalogSubtitle: "Prix en dollars canadiens (CAD) taxes et consigne incluses.",
+                p1Desc: "Notes intenses de lulo frais, de fruit de la passion et une touche d'agrumes.",
+                p2Desc: "Mélange doré de fruits des Andes avec un corps onctueux et aromatique.",
+                p3Desc: "Houblons nobles avec de subtiles notes de lulo infusées à froid.",
+                addCart: "Ajouter",
+                arTitle: "Découvrez Wick LU en Réalité Augmentée",
+                arDesc: "Scannez le code QR avec votre mobile ou cliquez sur le bouton pour projeter la canette en 3D. Découvrez nos origines et obtenez 10 % de rabais.",
+                arBtnLink: "✨ Ouvrir le Visor RA",
+                storyTitle: "Notre Origine Colombienne",
+                storyText: "Nés dans les montagnes de Cundinamarca, en Colombie, chez Wick LU nous fusionnons la tradition brassicole avec le trésor agricole des Andes : le lulo. Nous travaillons directement avec de petits agriculteurs pour apporter fraîcheur et authenticité au marché canadien.",
+                footerLegal: "Régulation & Paiements",
+                footerContact: "Contact",
+                cartTitle: "Votre Panier",
+                cartEmpty: "Le panier est vide.",
+                cartTotalLabel: "Total :",
+                checkoutBtn: "Passer la commande (Simulé)"
+            }
+        };
+
+        function changeLang(lang) {
+            const t = translations[lang];
+            document.getElementById('top-promo').innerText = t.topPromo;
+            document.querySelector('.nav-catalog').innerText = t.navCatalog;
+            document.querySelector('.nav-story').innerText = t.navStory;
+            document.querySelector('.nav-ar').innerText = t.navAr;
+            document.querySelector('.nav-contact').innerText = t.navContact;
+            document.getElementById('cart-btn-text').innerText = t.cartBtn;
+            
+            document.getElementById('hero-title').innerText = t.heroTitle;
+            document.getElementById('hero-desc').innerText = t.heroDesc;
+            document.getElementById('hero-btn-shop').innerText = t.heroBtnShop;
+            document.getElementById('hero-btn-ar').innerText = t.heroBtnAr;
+            
+            document.getElementById('catalog-title').innerText = t.catalogTitle;
+            document.getElementById('catalog-subtitle').innerText = t.catalogSubtitle;
+            document.getElementById('p1-desc').innerText = t.p1Desc;
+            document.getElementById('p2-desc').innerText = t.p2Desc;
+            document.getElementById('p3-desc').innerText = t.p3Desc;
+            
+            const addButtons = document.querySelectorAll('.add-cart-btn');
+            addButtons.forEach(btn => btn.innerText = t.addCart);
+
+            document.getElementById('ar-title').innerText = t.arTitle;
+            document.getElementById('ar-desc').innerText = t.arDesc;
+            document.getElementById('ar-btn-link').innerText = t.arBtnLink;
+            
+            document.getElementById('story-title').innerText = t.storyTitle;
+            document.getElementById('story-text').innerText = t.storyText;
+            
+            document.getElementById('footer-legal').innerText = t.footerLegal;
+            document.getElementById('footer-contact').innerText = t.footerContact;
+            
+            document.getElementById('cart-title').innerText = t.cartTitle;
+            if(document.getElementById('cart-empty')) document.getElementById('cart-empty').innerText = t.cartEmpty;
+            document.getElementById('cart-total-label').innerText = t.cartTotalLabel;
+            document.getElementById('checkout-btn').innerText = t.checkoutBtn;
+        }
+    </script>
+</body>
+</html>
